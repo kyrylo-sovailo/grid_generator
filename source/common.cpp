@@ -1,16 +1,7 @@
 #include "../include/grid_generator/common.h"
+#include "../include/grid_generator/common_internal.h"
 #include <math.h>
 #include <stdexcept>
-
-gg::Vector rotate_ccw(gg::Vector v)
-{
-    return gg::Vector(v.y, -v.x);
-}
-
-gg::Vector rotate_cw(gg::Vector v)
-{
-    return gg::Vector(-v.y, v.x);
-}
 
 bool angle_in_arc(double arc_azimuth, double arc_angle, double angle)
 {

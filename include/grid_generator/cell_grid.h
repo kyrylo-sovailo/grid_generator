@@ -20,22 +20,18 @@ namespace gg
     protected:
         Vector _coord;
         Vector _normal;
-        bool _boundary;
     public:
         ///Creates point
         ///@param coord Coordinate of the point
         Point(Vector coord);
-        ///Creates point that touches a boundary
-        ///@param coord Coordinate of the point
+        ///Creates point on a boundary
         ///@param intersection Intersection with the boundary
-        ///@param boundary boundary
-        Point(Vector coord, Intersection intersection, B boundary);
+        ///@param boundary Boundary
+        Point(Intersection intersection, const B *boundary);
         ///Gets point coordinate
         Vector coord() const;
         ///Gets point normal
         Vector normal() const;
-        ///Gets whether point touches the boundary
-        bool boundary() const;
     };
 
     /// Face between two points
@@ -52,6 +48,12 @@ namespace gg
         ///@param a First point
         ///@param b Second point
         Face(P *a, P *b);
+        ///Creates face that touches a boundary
+        ///@param a First point (free point)
+        ///@param b Second point (lies on boundary)
+        ///@param intersection Intersection with the boundary
+        ///@param boundary Boundary
+        Face(P *a, P *b, Intersection intersection, const B *boundary);
         ///Gers face center
         Vector center() const;
         ///Gets face normal
@@ -80,6 +82,16 @@ namespace gg
         double _area;
         std::vector<Side> _sides;
     public:
+        ///Creates cell
+        ///@param center Cell center
+        ///@param area Cell area
+        Cell(Vector center, double area);
+        ///Creates cell that touches a boundary
+        ///@param center Cell center
+        ///@param area Cell area
+        ///@param intersection Intersection with the boundary
+        ///@param boundary Boundary
+        Cell(Vector center, double area, Intersection intersection, const B *boundary);
         ///Gets coordinate of the center of the cell
         Vector center() const;
         ///Gets area of the cell

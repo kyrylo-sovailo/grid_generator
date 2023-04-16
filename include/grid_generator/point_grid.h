@@ -19,7 +19,6 @@ namespace gg
     protected:
         Vector _coord;
         Vector _normal;
-        bool _boundary;
         std::vector<StandalonePoint*> _neighbors;
     public:
         ///Creates point
@@ -27,15 +26,13 @@ namespace gg
         StandalonePoint(Vector coord);
         ///Creates point that touches a boundary
         ///@param coord Coordinate of the point
-        ///@param intersection INtersection with the boundary
-        ///@param boundary boundary
-        StandalonePoint(Vector coord, Intersection intersection, B boundary);
+        ///@param intersection Intersection with the boundary
+        ///@param boundary Boundary
+        StandalonePoint(Vector coord, Intersection intersection, const B *boundary);
         ///Gets point coordinate
         Vector coord() const;
         ///Gets point normal
         Vector normal() const;
-        ///Gets whether point touches the boundary
-        bool boundary() const;
         ///Gets list of point neighbors
         std::vector<StandalonePoint*> &neighbors();
     };

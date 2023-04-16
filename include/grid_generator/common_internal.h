@@ -37,12 +37,21 @@ namespace gg
 
     ///Gets number of points/faces
     unsigned int get_shape(const Parameters &parameters);
+    ///Gets area of the perfect cell
+    double get_area(const Parameters &parameters);
     ///Gets center of the element
     Vector get_center(const Parameters &parameters, Position position);
     ///Gets points of the element
-    Vector get_point(const Parameters &parameters, PointPosition point);
+    std::array<Vector, 6> get_points(const Parameters &parameters, Position point);
     ///Gets neighbors of the face
     FacePosition get_face_neighbor(const Parameters &parameters, FacePosition face);
     ///Gets neighbors of the point
     std::array<PointPosition, 6> get_point_neighbors(const Parameters &parameters, PointPosition point);
+
+    ///Rotates vector counterclockwise
+    Vector rotate_ccw(Vector v);
+    ///Rotates vector clockwise
+    Vector rotate_cw(Vector v);
+    ///Rotates vector
+    Vector rotate(Vector v, double angle);
 }
