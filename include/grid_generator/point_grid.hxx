@@ -22,13 +22,16 @@
     In this version of the algorithm active points with guaranty become passive after one iteration, so no checks are done
 */
 
-template <class B, class P>
-struct TemporaryStandalonePoint
+namespace gg
 {
-    P *point = nullptr;
-    gg::Intersection intersection;
-    const B *boundary = nullptr;
-};
+    template <class B, class P>
+    struct TemporaryStandalonePoint
+    {
+        P *point = nullptr;
+        Intersection intersection;
+        const B *boundary = nullptr;
+    };
+}
 
 template <class B> gg::StandalonePoint<B>::StandalonePoint(Vector coord) : _coord(coord), _normal(Vector(0,0)) {}
 

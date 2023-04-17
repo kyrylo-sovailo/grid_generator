@@ -1,7 +1,7 @@
 #include "../include/grid_generator/common.h"
 #include "../include/grid_generator/common_internal.h"
-#include <math.h>
 #include <stdexcept>
+#include <math.h>
 
 bool angle_in_arc(double arc_azimuth, double arc_angle, double angle)
 {

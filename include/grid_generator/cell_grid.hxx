@@ -24,47 +24,50 @@
     Because adding/removing elements from set cannot be done while iterating through it, there are sets like "to_be_active", etc.
 */
 
-enum class PointStatus
+namespace gg
 {
-    unreached,
-    to_be_active,
-    active,
-    passive
-};
-
-template <class B, class P, class F, class C>
-struct TemporaryCell
-{
-    struct TemporaryPoint
+    enum class PointStatus
     {
-        PointStatus status = PointStatus::unreached;
-
-        P *point = nullptr;
+        unreached,
+        to_be_active,
+        active,
+        passive
     };
-    std::vector<TemporaryPoint> points;
 
-    struct TemporaryFace
+    template <class B, class P, class F, class C>
+    struct TemporaryCell
     {
-        bool probed = false;            //Face was probed and intersections were searched
-        gg::Intersection intersection;  //Found intersection, includes coordinate and normal (result of probing)
-        const B *boundary = nullptr;    //Found boundary (result of probing)
+        struct TemporaryPoint
+        {
+            PointStatus status = PointStatus::unreached;
 
-        P *point = nullptr;
-        F *face = nullptr;
+            P *point = nullptr;
+        };
+        std::vector<TemporaryPoint> points;
+
+        struct TemporaryFace
+        {
+            bool probed = false;        //Face was probed and intersections were searched
+            Intersection intersection;  //Found intersection, includes coordinate and normal (result of probing)
+            const B *boundary = nullptr;//Found boundary (result of probing)
+
+            P *point = nullptr;
+            F *face = nullptr;
+        };
+        std::vector<TemporaryFace> faces;
+
+        Intersection intersection;  //Found intersection (also propagated due to failed cells)
+        const B *boundary = nullptr;//Found boundary (also propagated due to failed cells)
+
+        bool complete;
+        double area;
+        Vector center;
+        
+        C *cell = nullptr;
+
+        TemporaryCell(const CellGridParameters &parameters) : points(get_shape(parameters)), faces(get_shape(parameters)) {}
     };
-    std::vector<TemporaryFace> faces;
-
-    gg::Intersection intersection;  //Found intersection (also propagated due to failed cells)
-    const B *boundary = nullptr;    //Found boundary (also propagated due to failed cells)
-
-    bool complete;
-    double area;
-    gg::Vector center;
-    
-    C *cell = nullptr;
-
-    TemporaryCell(const gg::CellGridParameters &parameters) : points(gg::get_shape(parameters)), faces(gg::get_shape(parameters)) {}
-};
+}
 
 template <class B> gg::Point<B>::Point(Vector coord) :
     _coord(coord), _normal(0,0) {}

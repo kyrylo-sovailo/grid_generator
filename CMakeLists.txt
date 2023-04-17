@@ -8,6 +8,7 @@ set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 # Library
 add_library(${CMAKE_PROJECT_NAME} SHARED source/common.cpp source/common_internal.cpp)
 target_include_directories(${CMAKE_PROJECT_NAME} PUBLIC "$<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>" "$<INSTALL_INTERFACE:include>")
+target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE _USE_MATH_DEFINES)
 
 # Example
 find_package(GTest)
@@ -42,7 +43,13 @@ install(EXPORT ${CMAKE_PROJECT_NAME}_targets
     NAMESPACE ${CMAKE_PROJECT_NAME}::
     DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${CMAKE_PROJECT_NAME}")
 
-install(FILES "include/${CMAKE_PROJECT_NAME}/${CMAKE_PROJECT_NAME}.h"
+install(FILES
+    "include/${CMAKE_PROJECT_NAME}/point_grid.hxx"
+    "include/${CMAKE_PROJECT_NAME}/cell_grid.h"
+    "include/${CMAKE_PROJECT_NAME}/cell_grid.hxx"
+    "include/${CMAKE_PROJECT_NAME}/common.h"
+    "include/${CMAKE_PROJECT_NAME}/common_internal.h"
+    "include/${CMAKE_PROJECT_NAME}/point_grid.h"
     DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${CMAKE_PROJECT_NAME}")
 
 install(FILES "${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}Config.cmake" "${CMAKE_BINARY_DIR}/${CMAKE_PROJECT_NAME}ConfigVersion.cmake"
