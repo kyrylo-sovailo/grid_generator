@@ -138,17 +138,23 @@ gg::Intersection gg::Line::intersection(Vector a, Vector b) const
     const double A11 = -_b.y + _a.y;
     const double b0 = -a.x + _a.x;
     const double b1 = -a.y + _a.y;
-    const double determinant = A00 * A11 - A01 * A10;
+    const double determinant = abs(A00 * A11 - A01 * A10);
     const double t = (A11 * b0 - A01 * b1) / determinant;
     if (t < 0.0 || t > 1.0) return Intersection();
-    const double s = (-A10 * b0 - A00 * b1) / determinant;
+    const double s = (-A10 * b0 + A00 * b1) / determinant;
     if (s < 0.0 || s > 1.0) return Intersection();
     return Intersection(a + (b - a) * t, _b - _a, _normal_cw ? rotate_cw(_b-_a) : rotate_ccw(_b-_a));
 }
 
 gg::Boundary::Boundary(const Figure *fig) : _figure(fig)
 {
-    if (_figure == nullptr) throw std::runtime_error("gg::Boundary::Boundary(): Figure is nullptr");
+    if (fig == nullptr) throw std::runtime_error("gg::Boundary::Boundary(): Figure is nullptr");
+}
+
+gg::Boundary::Boundary(Boundary &&other)
+{
+    _figure = other._figure;
+    other._figure = nullptr;
 }
 
 const gg::Figure *gg::Boundary::figure() const

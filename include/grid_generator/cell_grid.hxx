@@ -249,7 +249,7 @@ template <class B, class P, class F, class C> gg::CellGrid<B, P, F, C>::CellGrid
                 {
                     cell->second.points[next_cw].status = PointStatus::to_be_active;
                     const std::array<PointPosition, 6> neighbors = get_point_neighbors(parameters, { cell->first, next_cw });
-                    for (std::array<PointPosition, 6>::const_iterator neighbor = neighbors.begin(); neighbor != neighbors.end(); neighbor++)
+                    for (std::array<PointPosition, 6>::const_iterator neighbor = neighbors.begin(); neighbor != neighbors.end() && neighbor->point < 100; neighbor++)
                     {
                         if (to_be_active.find(neighbor->position) != to_be_active.end()) //to_be_active points remain to_be_active
                         {
@@ -308,7 +308,7 @@ template <class B, class P, class F, class C> gg::CellGrid<B, P, F, C>::CellGrid
         bool complete = true;
         for (unsigned int p = 0; p < get_shape(parameters); p++)
         {
-            if (cell->second.points[p].status == PointStatus::passive && !cell->second.faces[p].intersection.valid) { complete = false; break; }
+            if (cell->second.points[p].status != PointStatus::passive || !cell->second.faces[p].intersection.valid) { complete = false; break; }
         }
         if (complete)
         {
@@ -394,7 +394,7 @@ template <class B, class P, class F, class C> gg::CellGrid<B, P, F, C>::CellGrid
                 {
                     _points.insert(cell->second.points[p].point = new P(points[p]));
                     const std::array<PointPosition, 6> neighbors = get_point_neighbors(parameters, { cell->first, p });
-                    for (typename std::array<PointPosition, 6>::const_iterator neighbor = neighbors.begin(); neighbor != neighbors.end(); neighbor++)
+                    for (std::array<PointPosition, 6>::const_iterator neighbor = neighbors.begin(); neighbor != neighbors.end() && neighbor->point < 100; neighbor++)
                         passive.find(neighbor->position)->second.points[neighbor->point].point = cell->second.points[p].point;
                 }
                 cell->second.cell->sides().push_back({ cell->second.points[p].point, nullptr, nullptr, false });
@@ -464,6 +464,7 @@ template <class B, class P, class F, class C> gg::CellGrid<B, P, F, C>::CellGrid
                         _faces.insert(irregular_face);
                         cell->second.cell->sides()[side_counter].face = irregular_face;
                         side_counter++;
+                        irregular_face_start = nullptr;
                     }
                     cell->second.cell->sides()[side_counter].face = cell->second.faces[p].face;
                     cell->second.cell->sides()[side_counter].cell = passive.find(neighbor.position)->second.cell;
@@ -477,7 +478,6 @@ template <class B, class P, class F, class C> gg::CellGrid<B, P, F, C>::CellGrid
                     side_counter++;
 
                     irregular_face_start = cell->second.faces[p].point;
-                    irregular_face_start = nullptr;
                 }
                 else
                 {
@@ -502,7 +502,7 @@ template <class B, class P, class F, class C> gg::CellGrid<B, P, F, C>::CellGrid
                 }
             }
         }
-    }
+    } 
 
     //STAGE 8: calculating if faces are flipped
     for (typename std::set<C*>::iterator icell = _cells.begin(); icell != _cells.end(); icell++)

@@ -145,6 +145,9 @@ namespace gg
         ///Creates boundary
         ///@param fig Boundary figure
         Boundary(const Figure *fig);
+        ///Transfers boundary
+        ///@param other Boundary to be transferred
+        Boundary(Boundary &&other);
         ///Returns boundary figure
         const Figure *figure() const;
         ///Destroys boundary and frees figure

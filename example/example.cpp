@@ -5,17 +5,17 @@
 int _main()
 {
     std::vector<gg::Boundary> boundaries;
-    boundaries.push_back(new gg::Line(gg::Vector(1.0, 1.0), gg::Vector(1.0, -1.0), false));
-    boundaries.push_back(new gg::Line(gg::Vector(1.0, -1.0), gg::Vector(-1.0, -1.0), false));
-    boundaries.push_back(new gg::Line(gg::Vector(-1.0, -1.0), gg::Vector(-1.0, 1.0), false));
-    boundaries.push_back(new gg::Line(gg::Vector(-1.0, 1.0), gg::Vector(1.0, 1.0), false));
-
+    boundaries.push_back(new gg::Line(gg::Vector(0.5, 0.5), gg::Vector(0.5, -0.5), false));
+    boundaries.push_back(new gg::Line(gg::Vector(0.5, -0.5), gg::Vector(-0.5, -0.5), false));
+    boundaries.push_back(new gg::Line(gg::Vector(-0.5, -0.5), gg::Vector(-0.5, 0.5), false));
+    boundaries.push_back(new gg::Line(gg::Vector(-0.5, 0.5), gg::Vector(0.5, 0.5), false));
+    
     //Point grid
     gg::PointGridParameters point_parameters;
     point_parameters.size = gg::Vector(0.3, 0.3);
     gg::PointGrid<> point_grid(point_parameters, boundaries);
     std::cout << "Constructed point grid has " <<
-        point_grid.points().size() << " points" <<
+        point_grid.points().size() << " points " <<
         "(" << (point_grid.points().size() == 9 ? "correct" : "incorrect") << ")\n";
 
     //Cell grid
@@ -27,7 +27,7 @@ int _main()
         cell_grid.points().size() << " points, " <<
         cell_grid.faces().size() << " faces, " <<
         cell_grid.cells().size() << " cells " <<
-        "(" << ((cell_grid.points().size() == 21 && cell_grid.points().size() == 21 && cell_grid.points().size() == 12) ? "correct" : "incorrect") << ")\n";
+        "(" << ((cell_grid.points().size() == 32 && cell_grid.points().size() == 56 && cell_grid.points().size() == 25) ? "correct" : "incorrect") << ")\n";
 
     return 0;
 }
